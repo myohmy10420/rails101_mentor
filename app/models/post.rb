@@ -42,4 +42,8 @@ class Post < ApplicationRecord
       transitions from: %i(pending verifying publish unapprove), to: :block
     end
   end
+
+  def status_editable?
+    status.in?(%w(pending verifying publish unapprove))
+  end
 end
