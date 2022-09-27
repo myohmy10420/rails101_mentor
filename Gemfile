@@ -19,6 +19,10 @@ gem 'will_paginate'
 
 group :development, :test do
   gem 'pry-rails'
+  gem 'rubocop', '~> 1.13.0', require: false
+  gem "rubocop-github"
+  gem "rubocop-performance", require: false
+  gem "rubocop-rails", require: false
 end
 
 group :development do
