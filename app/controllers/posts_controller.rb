@@ -14,6 +14,7 @@ class PostsController < ApplicationController
     @post.author = current_user
 
     if @post.save
+      @post.submit! if params[:commit] == 'Submit'
       redirect_to group_path(@group)
     else
       render "new"
@@ -24,6 +25,7 @@ class PostsController < ApplicationController
 
   def update
     if @post.update(post_params)
+      @post.submit!
       redirect_to group_path(@group), notice: "Update Success"
     else
       render "edit"

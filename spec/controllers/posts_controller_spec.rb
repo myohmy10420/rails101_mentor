@@ -23,8 +23,13 @@ RSpec.describe PostsController do
   end
 
   describe "POST create" do
-    let(:post_params) { { content: "content" } }
-    subject { post :create, params: { group_id: group.id, post: post_params } }
+    let(:params) do
+      {
+        group_id: group.id,
+        post: { content: "content" }
+      }
+    end
+    subject { post :create, params: params }
 
     before { sign_in(user) }
 
@@ -35,10 +40,24 @@ RSpec.describe PostsController do
       expect(response).to redirect_to(group_path(group))
     end
 
-    it "the created post is pending" do
-      subject
+    context "when save post" do
+      before { params.merge!(commit: "Save") }
 
-      expect(assigns(:post).status).to eq("pending")
+      it "the created post is pending" do
+        subject
+
+        expect(assigns(:post).status).to eq("pending")
+      end
+    end
+
+    context "when submit post" do
+      before { params.merge!(commit: "Submit") }
+
+      it "the created post is verifying" do
+        subject
+
+        expect(assigns(:post).status).to eq("verifying")
+      end
     end
   end
 
