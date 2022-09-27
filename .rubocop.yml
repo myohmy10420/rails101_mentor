@@ -1,0 +1,90 @@
+inherit_mode:
+  merge:
+    - Exclude
+
+inherit_gem:
+  rubocop-github:
+    - config/default.yml
+    - config/rails.yml
+
+AllCops:
+  SuggestExtensions: false
+  NewCops: enable
+  Exclude:
+    - 'vendor/bundle/**/*'
+    - 'node_modules/**/*'
+    - 'vendor/**/*'
+    - 'script/*'
+    - 'lib/**/*'
+    - 'config/**/*'
+    - 'spec/**/*'
+    - 'lib/**/*'
+    - 'db/**/*'
+    - 'bin/*'
+
+Rails/InverseOf:
+  Enabled: false
+
+Rails/HasManyOrHasOneDependent:
+  Enabled: false
+
+Style/NegatedIf:
+  Enabled: false
+
+Security/Eval:
+  Enabled: false
+
+Security/Eval:
+  Enabled: false
+
+Style/Documentation:
+  Enabled: false
+
+Style/ClassAndModuleChildren:
+  Enabled: false
+
+Style/GlobalVars:
+  Enabled: false
+
+Style/EvalWithLocation:
+  Enabled: false
+
+# Use only ascii symbols in comments.
+Style/AsciiComments:
+  Enabled: false
+
+# 這個用不到，不一定要找到 template 才行
+GitHub/RailsControllerRenderPathsExist:
+  Enabled: false
+
+Rails/UnknownEnv:
+  Enabled: false
+
+Rails/Output:
+  Enabled: false
+
+# 這個自動修正會修錯，太危險
+Style/FormatStringToken:
+  Enabled: false
+
+# 不一定要 .zero 比較好懂
+Style/NumericPredicate:
+  Enabled: false
+
+# 有一些判斷在 case when 裡面下 if 會被警告
+Style/IfInsideElse:
+  Enabled: false
+
+GitHub/RailsControllerRenderLiteral:
+  Enabled: false
+
+Rails/UniqueValidationWithoutIndex:
+  Enabled: false
+
+# 寫短的語句反而無法載入後面的 locals var（寫 render partial: "part" 反而可以）
+GitHub/RailsViewRenderShorthand:
+  Enabled: false
+
+Naming/VariableNumber:
+  Enabled: false
+
