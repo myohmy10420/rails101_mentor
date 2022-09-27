@@ -32,10 +32,10 @@
       <% @posts.each do |post| %>
         <tr>
           <td><%= post.content %></td>
-          <td><%= post.user.email %></td>
+          <td><%= post.author.email %></td>
           <td><%= post.created_at %></td>
           <td>
-            <% if current_user == post.user %>
+            <% if current_user == post.author %>
               <%= link_to('Edit', edit_group_post_path(@group, post), class: "btn btn-default btn-xs") %>
               <%= link_to('Delete', group_post_path(@group, post), method: :delete, data: { confirm: "Are you sure?" }, class: "btn btn-default btn-xs") %>
             <% end %>

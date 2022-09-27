@@ -11,7 +11,7 @@ class PostsController < ApplicationController
   def create
     @post = Post.new(post_params)
     @post.group = @group
-    @post.user = current_user
+    @post.author = current_user
 
     if @post.save
       redirect_to group_path(@group)
@@ -49,6 +49,6 @@ class PostsController < ApplicationController
   def find_post_and_check_permission
     @post = Post.find(params[:id])
 
-    redirect_to root_path, alert: "You have no permission." if current_user != @post.user
+    redirect_to root_path, alert: "You have no permission." if current_user != @post.author
   end
 end

@@ -34,10 +34,16 @@ RSpec.describe PostsController do
       expect(response).to have_http_status(302)
       expect(response).to redirect_to(group_path(group))
     end
+
+    it "the created post is pending" do
+      subject
+
+      expect(assigns(:post).status).to eq("pending")
+    end
   end
 
   describe "GET edit" do
-    let(:user_post) { create(:post, user: user, group: group) }
+    let(:user_post) { create(:post, author: user, group: group) }
     subject { get :edit, params: { group_id: group.id, id: user_post.id } }
 
     before { sign_in(user) }
@@ -51,7 +57,7 @@ RSpec.describe PostsController do
   end
 
   describe "PUT update" do
-    let(:user_post) { create(:post, user: user, group: group) }
+    let(:user_post) { create(:post, author: user, group: group) }
     let(:post_params) { { content: "updated content" } }
     subject { put :update, params: { group_id: group.id, id: user_post.id, post: post_params } }
 
@@ -67,7 +73,7 @@ RSpec.describe PostsController do
   end
 
   describe "DELETE destroy" do
-    let(:user_post) { create(:post, user: user, group: group) }
+    let(:user_post) { create(:post, author: user, group: group) }
     subject { delete :destroy, params: { group_id: group.id, id: user_post.id } }
 
     before do

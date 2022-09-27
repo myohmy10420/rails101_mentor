@@ -32,6 +32,6 @@ class Account::PostsController < ApplicationController
   def find_post_and_check_permission
     @post = Post.find(params[:id])
 
-    redirect_to root_path, alert: "You have no permission." if current_user != @post.user
+    redirect_to root_path, alert: "You have no permission." if current_user != @post.author
   end
 end

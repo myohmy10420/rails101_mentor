@@ -1,7 +1,7 @@
 # frozen_string_literal: true
 RSpec.describe Account::PostsController do
   let(:user) { create(:user) }
-  let(:user_post) { create(:post, user: user) }
+  let(:user_post) { create(:post, author: user) }
 
   before { sign_in(user) }
 
