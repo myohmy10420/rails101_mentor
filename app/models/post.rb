@@ -8,6 +8,7 @@ class Post < ApplicationRecord
   validates :content, presence: true
 
   scope :recent, -> { order("created_at DESC") }
+  scope :once_published, -> { where.not(published_at: nil) }
 
   enum status: {
     pending: 0,
@@ -26,7 +27,7 @@ class Post < ApplicationRecord
       transitions from: %i(pending verifying publish unapprove), to: :verifying
     end
 
-    event :approve do
+    event :approve, after: :stamp_published_at do
       transitions from: :verifying, to: :publish
     end
 
@@ -45,5 +46,9 @@ class Post < ApplicationRecord
 
   def status_editable?
     status.in?(%w(pending verifying publish unapprove))
+  end
+
+  def stamp_published_at
+    update(published_at: Time.zone.now)
   end
 end

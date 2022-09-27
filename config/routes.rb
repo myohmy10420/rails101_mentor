@@ -7,7 +7,11 @@ Rails.application.routes.draw do
       post :quit
     end
 
-    resources :posts
+    resources :posts do
+      member do
+        post :verify
+      end
+    end
   end
 
   namespace :account do
