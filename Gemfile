@@ -16,6 +16,7 @@ gem 'bootstrap-sass'
 gem 'simple_form'
 gem 'devise'
 gem 'will_paginate'
+gem 'aasm'
 
 group :development, :test do
   gem 'pry-rails'
