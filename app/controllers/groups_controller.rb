@@ -1,4 +1,6 @@
 class GroupsController < ApplicationController
+  before_action :authenticate_user!, only: %i(new create edit update destroy)
+
   def index
     @groups = Group.all
   end
