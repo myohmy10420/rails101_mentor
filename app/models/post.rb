@@ -9,11 +9,6 @@ class Post < ApplicationRecord
 
   scope :recent, -> { order("created_at DESC") }
 
-  aasm column: :status, enum: true do
-    state :pending, initial: true
-    state :publish, :unapprove, :cancel, :block
-  end
-
   enum status: {
     pending: 0,
     publish: 1,
@@ -21,4 +16,9 @@ class Post < ApplicationRecord
     cancel: 3, # by user
     block: 4 # by group owner
   }
+
+  aasm column: :status, enum: true do
+    state :pending, initial: true
+    state :publish, :unapprove, :cancel, :block
+  end
 end
