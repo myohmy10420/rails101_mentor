@@ -19,9 +19,9 @@ class Account::PostsController < ApplicationController
   end
 
   def destroy
-    @post.destroy
+    @post.cancel!
 
-    redirect_to account_posts_path, alert: "Group deleted"
+    redirect_to account_posts_path, alert: "Group #{params[:commit]}ed"
   end
 
   private

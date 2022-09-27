@@ -99,18 +99,34 @@ RSpec.describe PostsController do
 
   describe "DELETE destroy" do
     let(:user_post) { create(:post, author: user, group: group) }
-    subject { delete :destroy, params: { group_id: group.id, id: user_post.id } }
 
     before do
       user_post
       sign_in(user)
     end
 
-    it "delete the group response expected" do
-      expect { subject }.to change { user.posts.count }.from(1).to(0)
+    context "when cancel by post author" do
+      subject { delete :destroy, params: { group_id: group.id, id: user_post.id, commit: "cancel" } }
 
-      expect(response).to have_http_status(302)
-      expect(response).to redirect_to(group_path(group))
+      it "cancel the post and response expected" do
+        subject
+
+        expect(user_post.reload.status).to eq("cancel")
+        expect(response).to have_http_status(302)
+        expect(response).to redirect_to(group_path(group))
+      end
+    end
+
+    context "when block by group owner" do
+      subject { delete :destroy, params: { group_id: group.id, id: user_post.id, commit: "block" } }
+
+      it "block the post and response expected" do
+        subject
+
+        expect(user_post.reload.status).to eq("block")
+        expect(response).to have_http_status(302)
+        expect(response).to redirect_to(group_path(group))
+      end
     end
   end
 end

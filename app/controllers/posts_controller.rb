@@ -14,7 +14,7 @@ class PostsController < ApplicationController
     @post.author = current_user
 
     if @post.save
-      @post.submit! if params[:commit] == 'Submit'
+      @post.submit! if params[:commit] == "Submit"
       redirect_to group_path(@group)
     else
       render "new"
@@ -33,9 +33,10 @@ class PostsController < ApplicationController
   end
 
   def destroy
-    @post.destroy
+    @post.cancel! if params[:commit] == "cancel"
+    @post.block! if params[:commit] == "block"
 
-    redirect_to group_path(@group), alert: "Group deleted"
+    redirect_to group_path(@group), alert: "Group #{params[:commit]}ed"
   end
 
   private

@@ -52,9 +52,9 @@ RSpec.describe Account::PostsController do
     subject { delete :destroy, params: { id: user_post.id } }
 
     it "delete the group response expected" do
-      user_post
-      expect { subject }.to change { user.posts.count }.from(1).to(0)
+      subject
 
+      expect(user_post.reload.status).to eq("cancel")
       expect(response).to have_http_status(302)
       expect(response).to redirect_to(account_posts_path)
     end
