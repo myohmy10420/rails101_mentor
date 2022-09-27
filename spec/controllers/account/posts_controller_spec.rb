@@ -40,6 +40,12 @@ RSpec.describe Account::PostsController do
       expect(response).to redirect_to(account_posts_path)
       expect(user_post.reload.content).to eq("updated content")
     end
+
+    it "update post status to verifing" do
+      subject
+
+      expect(user_post.reload.status).to eq("verifying")
+    end
   end
 
   describe "DELETE destroy" do

@@ -23,7 +23,7 @@ class Post < ApplicationRecord
     state :verifying, :publish, :unapprove, :cancel, :block
 
     event :submit do
-      transitions from: %i(pending publish unapprove), to: :verifying
+      transitions from: %i(pending verifying publish unapprove), to: :verifying
     end
 
     event :approve do

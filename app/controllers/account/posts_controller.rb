@@ -11,6 +11,7 @@ class Account::PostsController < ApplicationController
 
   def update
     if @post.update(post_params)
+      @post.submit!
       redirect_to account_posts_path, notice: "Update Success"
     else
       render "edit"

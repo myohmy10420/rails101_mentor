@@ -89,6 +89,12 @@ RSpec.describe PostsController do
       expect(response).to redirect_to(group_path(group))
       expect(user_post.reload.content).to eq("updated content")
     end
+
+    it "update post status to verifing" do
+      subject
+
+      expect(user_post.reload.status).to eq("verifying")
+    end
   end
 
   describe "DELETE destroy" do
