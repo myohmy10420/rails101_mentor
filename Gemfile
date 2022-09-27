@@ -24,6 +24,7 @@ group :development, :test do
   gem "rubocop-performance", require: false
   gem "rubocop-rails", require: false
   gem 'rspec-rails'
+  gem 'rails-controller-testing'
   gem 'factory_bot_rails'
 end
 
