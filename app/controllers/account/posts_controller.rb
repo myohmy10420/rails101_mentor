@@ -1,3 +1,4 @@
+# frozen_string_literal: true
 class Account::PostsController < ApplicationController
   before_action :authenticate_user!
   before_action :find_post_and_check_permission, only: %i(edit update destroy)
@@ -12,7 +13,7 @@ class Account::PostsController < ApplicationController
     if @post.update(post_params)
       redirect_to account_posts_path, notice: "Update Success"
     else
-      render :edit
+      render "edit"
     end
   end
 

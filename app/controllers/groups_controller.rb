@@ -1,3 +1,4 @@
+# frozen_string_literal: true
 class GroupsController < ApplicationController
   before_action :authenticate_user!, only: %i(new create edit update destroy join quit)
   before_action :find_group_and_check_permission, only: %i(edit update destroy)
@@ -18,7 +19,7 @@ class GroupsController < ApplicationController
       current_user.join!(@group)
       redirect_to groups_path
     else
-      render :new
+      render "new"
     end
   end
 
@@ -33,7 +34,7 @@ class GroupsController < ApplicationController
     if @group.update(group_params)
       redirect_to groups_path, notice: "Update Success"
     else
-      render :edit
+      render "edit"
     end
   end
 

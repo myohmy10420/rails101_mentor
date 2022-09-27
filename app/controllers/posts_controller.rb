@@ -1,5 +1,6 @@
+# frozen_string_literal: true
 class PostsController < ApplicationController
-  before_action :authenticate_user!, only: %i(new, create)
+  before_action :authenticate_user!, only: %i(new create)
   before_action :find_group
   before_action :find_post_and_check_permission, only: %i(edit update destroy)
 
@@ -15,7 +16,7 @@ class PostsController < ApplicationController
     if @post.save
       redirect_to group_path(@group)
     else
-      render :new
+      render "new"
     end
   end
 
@@ -25,7 +26,7 @@ class PostsController < ApplicationController
     if @post.update(post_params)
       redirect_to group_path(@group), notice: "Update Success"
     else
-      render :edit
+      render "edit"
     end
   end
 
