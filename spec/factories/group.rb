@@ -1,7 +1,7 @@
 # frozen_string_literal: true
 FactoryBot.define do
   factory :group do
-    association :user
+    owner { create(:user) }
     title { "title" }
     description { "description" }
   end

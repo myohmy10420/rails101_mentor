@@ -61,7 +61,7 @@ RSpec.describe GroupsController do
   end
 
   describe "GET edit" do
-    let(:group) { create(:group, user: user) }
+    let(:group) { create(:group, owner: user) }
     subject { get :edit, params: { id: group.id } }
 
     before { sign_in(user) }
@@ -75,7 +75,7 @@ RSpec.describe GroupsController do
   end
 
   describe "PUT update" do
-    let(:group) { create(:group, user: user) }
+    let(:group) { create(:group, owner: user) }
     let(:group_params) { { description: "updated description" } }
     subject { put :update, params: { id: group.id, group: group_params } }
 
@@ -91,7 +91,7 @@ RSpec.describe GroupsController do
   end
 
   describe "DELETE destroy" do
-    let(:group) { create(:group, user: user) }
+    let(:group) { create(:group, owner: user) }
     subject { delete :destroy, params: { id: group.id } }
 
     before do
