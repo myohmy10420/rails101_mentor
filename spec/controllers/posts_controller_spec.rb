@@ -105,6 +105,13 @@ RSpec.describe PostsController do
       sign_in(user)
     end
 
+    it "response expected if action success" do
+      delete :destroy, params: { group_id: group.id, id: user_post.id }
+
+      expect(response).to have_http_status(302)
+      expect(response).to redirect_to(group_path(group))
+    end
+
     context "when cancel by post author" do
       subject { delete :destroy, params: { group_id: group.id, id: user_post.id, commit: "cancel" } }
 
@@ -112,8 +119,6 @@ RSpec.describe PostsController do
         subject
 
         expect(user_post.reload.status).to eq("cancel")
-        expect(response).to have_http_status(302)
-        expect(response).to redirect_to(group_path(group))
       end
     end
 
@@ -124,8 +129,52 @@ RSpec.describe PostsController do
         subject
 
         expect(user_post.reload.status).to eq("block")
-        expect(response).to have_http_status(302)
-        expect(response).to redirect_to(group_path(group))
+      end
+    end
+  end
+
+  describe "POST verify" do
+    let(:user_post) { create(:post, author: user, group: group) }
+    let(:group) { create(:group, owner: user) }
+
+    before do
+      user_post.submit!
+      sign_in(user)
+    end
+
+    it "response expected if action success" do
+      post :verify, params: { group_id: group.id, id: user_post.id }
+
+      expect(response).to have_http_status(302)
+      expect(response).to redirect_to(group_path(group))
+    end
+
+    it "redirect to root_path if no permission" do
+      user2 = create(:user)
+      group.update(owner: user2)
+      post :verify, params: { group_id: group.id, id: user_post.id }
+
+      expect(response).to have_http_status(302)
+      expect(response).to redirect_to(root_path)
+    end
+
+    context "when approve" do
+      subject { post :verify, params: { group_id: group.id, id: user_post.id, commit: "approve" } }
+
+      it "update post status to publish" do
+        subject
+
+        expect(user_post.reload.status).to eq("publish")
+      end
+    end
+
+    context "when unapprove" do
+      subject { post :verify, params: { group_id: group.id, id: user_post.id, commit: "unapprove" } }
+
+      it "update post status to unapprove" do
+        subject
+
+        expect(user_post.reload.status).to eq("unapprove")
       end
     end
   end
