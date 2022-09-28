@@ -125,6 +125,8 @@ RSpec.describe PostsController do
     context "when block by group owner" do
       subject { delete :destroy, params: { group_id: group.id, id: user_post.id, commit: "block" } }
 
+      before { group.update(owner: user) }
+
       it "block the post and response expected" do
         subject
 

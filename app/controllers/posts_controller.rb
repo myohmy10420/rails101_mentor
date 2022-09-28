@@ -1,8 +1,10 @@
 # frozen_string_literal: true
 class PostsController < ApplicationController
-  before_action :authenticate_user!, only: %i(new create verify)
+  before_action :authenticate_user!, only: %i(new create edit update destroy verify)
   before_action :find_group
-  before_action :find_post_and_check_permission, only: %i(edit update destroy)
+  before_action :find_post, only: %i(edit update destroy verify)
+  before_action :check_post_author_permission, only: %i(edit update)
+  before_action :check_group_owner_permission, only: %i(verify)
 
   def new
     @post = Post.new
@@ -33,16 +35,19 @@ class PostsController < ApplicationController
   end
 
   def destroy
-    @post.cancel! if params[:commit] == "cancel"
-    @post.block! if params[:commit] == "block"
+    case params[:commit]
+    when "cancel"
+      return redirect_to root_path, alert: "You have no permission." if current_user != @post.author
+      @post.cancel!
+    when "block"
+      return redirect_to root_path, alert: "You have no permission." if current_user != @group.owner
+      @post.block!
+    end
 
     redirect_to group_path(@group), notice: "Group #{params[:commit]}ed"
   end
 
   def verify
-    return redirect_to root_path, alert: "You have no permission." if current_user != @group.owner
-
-    @post = Post.find(params[:id])
     @post.approve! if params[:commit] == "approve"
     @post.unapprove! if params[:commit] == "unapprove"
 
@@ -59,12 +64,15 @@ class PostsController < ApplicationController
     @group = Group.find(params[:group_id])
   end
 
-  def find_post_and_check_permission
+  def find_post
     @post = Post.find(params[:id])
+  end
 
-    return if params[:commit] == "cancel" && current_user == @post.author
-    return if params[:commit] == "block" && current_user == @group.owner
+  def check_post_author_permission
+    redirect_to root_path, alert: "You have no permission." if current_user != @post.author
+  end
 
-    redirect_to root_path, alert: "You have no permission."
+  def check_group_owner_permission
+    redirect_to root_path, alert: "You have no permission." if current_user != @group.owner
   end
 end
