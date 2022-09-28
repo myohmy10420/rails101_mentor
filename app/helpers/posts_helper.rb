@@ -9,7 +9,7 @@ module PostsHelper
         "(Cancel by post author)"
       end
     when "block"
-      if current_user == post.group.owner
+      if current_user == post.author || current_user == post.group.owner
         post.content
       else
         "(Block by group owner)"
