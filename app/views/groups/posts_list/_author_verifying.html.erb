@@ -4,7 +4,7 @@
     <thead>
       <tr>
         <th>文章内容</th>
-        <th>發表時間</th>
+        <th>最後更新時間</th>
         <th>Status</th>
         <th></th>
       </tr>
@@ -13,7 +13,7 @@
       <% posts.each do |post| %>
         <tr>
           <td><%= render_post_content(post) %></td>
-          <td><%= post.created_at %></td>
+          <td><%= post.updated_at %></td>
           <td><%= post.status %></td>
           <td>
             <%= link_to('Edit', edit_group_post_path(group, post), class: "btn btn-default btn-xs") %>

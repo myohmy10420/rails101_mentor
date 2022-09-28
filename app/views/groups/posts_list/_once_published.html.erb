@@ -15,7 +15,7 @@
         <tr>
           <td><%= render_post_content(post) %></td>
           <td><%= render_author_email(post) %></td>
-          <td><%= post.created_at %></td>
+          <td><%= post.published_at %></td>
           <td><%= render_post_status_note(post) %></td>
           <td>
             <% if current_user == post.author && post.status_editable? %>

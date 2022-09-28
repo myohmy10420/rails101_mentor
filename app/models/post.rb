@@ -7,7 +7,8 @@ class Post < ApplicationRecord
 
   validates :content, presence: true
 
-  scope :recent, -> { order("created_at DESC") }
+  scope :recent_updated, -> { order(updated_at: :desc) }
+  scope :recent_published, -> { order(published_at: :desc) }
   scope :once_published, -> { where.not(published_at: nil) }
 
   enum status: {

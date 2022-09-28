@@ -5,7 +5,7 @@
       <tr>
         <th>文章内容</th>
         <th>發表者</th>
-        <th>發表時間</th>
+        <th>最後更新時間</th>
         <th></th>
       </tr>
     </thead>
@@ -14,7 +14,7 @@
         <tr>
           <td><%= render_post_content(post) %></td>
           <td><%= render_author_email(post) %></td>
-          <td><%= post.created_at %></td>
+          <td><%= post.updated_at %></td>
           <td>
             <%= link_to('Approve', verify_group_post_path(group, post, commit: "approve"), method: :post, class: "btn btn-default btn-xs") %>
             <%= link_to('Unapprove', verify_group_post_path(group, post, commit: "unapprove"), method: :post, class: "btn btn-default btn-xs") %>

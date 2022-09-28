@@ -25,9 +25,9 @@ class GroupsController < ApplicationController
 
   def show
     @group = Group.find(params[:id])
-    @author_verifying_posts = @group.posts.where(author: current_user, status: %w(pending verifying unapprove)).recent
-    @owner_verifying_posts = @group.posts.verifying.recent if current_user == @group.owner
-    @once_published_posts = @group.posts.once_published.recent.paginate(page: params[:page], per_page: 5)
+    @author_verifying_posts = @group.posts.where(author: current_user, status: %w(pending verifying unapprove)).recent_updated
+    @owner_verifying_posts = @group.posts.verifying.recent_updated if current_user == @group.owner
+    @once_published_posts = @group.posts.once_published.recent_published.paginate(page: params[:page], per_page: 5)
   end
 
   def edit; end
