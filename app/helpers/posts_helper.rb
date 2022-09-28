@@ -9,7 +9,11 @@ module PostsHelper
         "(Cancel by post author)"
       end
     when "block"
-      "(Block by group owner)"
+      if current_user == post.group.owner
+        post.content
+      else
+        "(Block by group owner)"
+      end
     else
       post.content
     end
@@ -28,7 +32,9 @@ module PostsHelper
 
     case post.status
     when "cancel"
-      "(You have been cancel the post)"
+      "(Post author canceled the post)"
+    when "block"
+      "(Group owner blocked the post)"
     end
   end
 end
