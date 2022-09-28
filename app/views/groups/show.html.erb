@@ -16,100 +16,10 @@
       <%= link_to("Edit", edit_group_path(@group), class: "btn btn-primary pull-right")%>
     <% end %>
   </div>
-  <h2><%= @group.title %></h2>
-  <p><%= @group.description %></p>
-
-  <h3>文章列表</h3>
-  <table class="table">
-    <thead>
-      <tr>
-        <th>文章内容</th>
-        <th>發表者</th>
-        <th>發表時間</th>
-        <th></th>
-        <th></th>
-      </tr>
-    </thead>
-    <tbody>
-      <% @once_published_posts.each do |post| %>
-        <tr>
-          <td><%= render_post_content(post) %></td>
-          <td><%= render_author_email(post) %></td>
-          <td><%= post.created_at %></td>
-          <td><%= render_post_status_note(post) %></td>
-          <td>
-            <% if current_user == post.author && post.status_editable? %>
-              <%= link_to('Edit', edit_group_post_path(@group, post), class: "btn btn-default btn-xs") %>
-              <%= link_to('Cancel', group_post_path(@group, post, commit: "cancel"), method: :delete, data: { confirm: "Are you sure?" }, class: "btn btn-default btn-xs") %>
-            <% end %>
-            <% if current_user == @group.owner && post.publish? %>
-              <%= link_to('Block', group_post_path(@group, post, commit: "block"), method: :delete, data: { confirm: "Are you sure?" }, class: "btn btn-default btn-xs") %>
-            <% end %>
-          </td>
-        </tr>
-      <% end %>
-    </tbody>
-  </table>
+  <h2>群組名稱：<%= @group.title %></h2>
+  <p>群組摘要：<%= @group.description %></p>
 </div>
 
-<div class="text-center">
-  <%= will_paginate @once_published_posts %>
-</div>
-
-<% if @author_verifying_posts.present? %>
-  <div class="col-md-12">
-    <h3>待審核文章列表(For Post Author)</h3>
-    <table class="table">
-      <thead>
-        <tr>
-          <th>文章内容</th>
-          <th>發表時間</th>
-          <th>Status</th>
-          <th></th>
-        </tr>
-      </thead>
-      <tbody>
-        <% @author_verifying_posts.each do |post| %>
-          <tr>
-            <td><%= render_post_content(post) %></td>
-            <td><%= post.created_at %></td>
-            <td><%= post.status %></td>
-            <td>
-              <%= link_to('Edit', edit_group_post_path(@group, post), class: "btn btn-default btn-xs") %>
-              <%= link_to('Cancel', group_post_path(@group, post, commit: "cancel"), method: :delete, data: { confirm: "Are you sure?" }, class: "btn btn-default btn-xs") %>
-            </td>
-          </tr>
-        <% end %>
-      </tbody>
-    </table>
-  </div>
-<% end %>
-
-<% if current_user == @group.owner %>
-  <div class="col-md-12">
-    <h3>待審核文章列表(For Group Owner)</h3>
-    <table class="table">
-      <thead>
-        <tr>
-          <th>文章内容</th>
-          <th>發表者</th>
-          <th>發表時間</th>
-          <th></th>
-        </tr>
-      </thead>
-      <tbody>
-        <% @owner_verifying_posts.each do |post| %>
-          <tr>
-            <td><%= render_post_content(post) %></td>
-            <td><%= render_author_email(post) %></td>
-            <td><%= post.created_at %></td>
-            <td>
-              <%= link_to('Approve', verify_group_post_path(@group, post, commit: "approve"), method: :post, class: "btn btn-default btn-xs") %>
-              <%= link_to('Unapprove', verify_group_post_path(@group, post, commit: "unapprove"), method: :post, class: "btn btn-default btn-xs") %>
-            </td>
-          </tr>
-        <% end %>
-      </tbody>
-    </table>
-  </div>
-<% end %>
+<%= render "groups/posts_list/once_published", group: @group, posts: @once_published_posts %>
+<%= render "groups/posts_list/author_verifying", group: @group, posts: @author_verifying_posts if @author_verifying_posts.present? %>
+<%= render "groups/posts_list/author_verifying", group: @group, posts: @owner_verifying_posts if current_user == @group.owner %>
