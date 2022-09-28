@@ -22,4 +22,4 @@
 
 <%= render "groups/posts_list/once_published", group: @group, posts: @once_published_posts %>
 <%= render "groups/posts_list/author_verifying", group: @group, posts: @author_verifying_posts if @author_verifying_posts.present? %>
-<%= render "groups/posts_list/author_verifying", group: @group, posts: @owner_verifying_posts if current_user == @group.owner %>
+<%= render "groups/posts_list/owner_verifying", group: @group, posts: @owner_verifying_posts if current_user == @group.owner %>
