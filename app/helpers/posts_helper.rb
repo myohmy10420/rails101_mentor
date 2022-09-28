@@ -28,8 +28,6 @@ module PostsHelper
   end
 
   def render_post_status_note(post)
-    return "" if current_user != post.author
-
     case post.status
     when "cancel"
       "(Post author canceled the post)"
