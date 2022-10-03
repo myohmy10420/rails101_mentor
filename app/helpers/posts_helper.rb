@@ -2,6 +2,18 @@
 module PostsHelper
   def render_post_content(post)
     case post.status
+    when "verifying"
+      if current_user == post.author || current_user == post.group.owner
+        post.content
+      else
+        "(New update is verifying)"
+      end
+    when "unapprove"
+      if current_user == post.author || current_user == post.group.owner
+        post.content
+      else
+        "(Last update is unapproved)"
+      end
     when "cancel"
       if current_user == post.author
         post.content
@@ -29,6 +41,18 @@ module PostsHelper
 
   def render_post_status_note(post)
     case post.status
+    when "verifying"
+      if post.published_at.present?
+        "(Waiting for group owner verify)"
+      else
+        post.status
+      end
+    when "unapprove"
+      if post.published_at.present?
+        "(Last update is unapproved)"
+      else
+        post.content
+      end
     when "cancel"
       "(Post author canceled the post)"
     when "block"

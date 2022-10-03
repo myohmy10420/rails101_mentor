@@ -24,7 +24,7 @@ class Post < ApplicationRecord
     state :pending, initial: true
     state :verifying, :publish, :unapprove, :cancel, :block
 
-    event :submit, after: :clean_published_at do
+    event :submit do
       transitions from: %i(pending verifying publish unapprove), to: :verifying
     end
 
@@ -47,10 +47,6 @@ class Post < ApplicationRecord
 
   def status_editable?
     status.in?(%w(pending verifying publish unapprove))
-  end
-
-  def clean_published_at
-    update(published_at: nil)
   end
 
   def stamp_published_at
