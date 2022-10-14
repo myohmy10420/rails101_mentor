@@ -4,14 +4,14 @@ class Account::PostsController < ApplicationController
   before_action :find_post_and_check_permission, only: %i(edit update destroy)
 
   def index
-    @posts = current_user.posts
+    @posts = current_user.posts.recent_updated
   end
 
   def edit; end
 
   def update
     if @post.update(post_params)
-      @post.submit!
+      @post.submit! if params[:commit].in?(%w[Submit Update])
       redirect_to account_posts_path, notice: "Update Success"
     else
       render "edit"
