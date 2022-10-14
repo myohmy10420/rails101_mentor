@@ -27,7 +27,7 @@ class PostsController < ApplicationController
 
   def update
     if @post.update(post_params)
-      @post.submit!
+      @post.submit! if params[:commit].in?(%w[Submit Update])
       redirect_to group_path(@group), notice: "Update Success"
     else
       render "edit"
